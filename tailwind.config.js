@@ -5,7 +5,11 @@ module.exports = {
     "./src/**/*.{vue,js,ts,jsx,txs}"
   ],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage:{
+        "app":"url('/img/1.jpg')"
+      }
+    },
   },
   plugins: [],
 }

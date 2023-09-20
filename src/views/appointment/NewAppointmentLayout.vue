@@ -17,7 +17,6 @@ const route = useRoute()
             Cita y Resumen
         </RouterLink>
     </nav>
-
     <RouterView />
 </template>
 

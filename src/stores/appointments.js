@@ -1,9 +1,21 @@
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { defineStore } from 'pinia'
 
 export const useAppointmentStore = defineStore('appointments', () => {
 
     const services = ref([])
+    const date = ref('')
+    const hours = ref([])
+    const time = ref('')
+
+    onMounted(() => {
+        const startHour = 9
+        const endHour = 19
+
+        for (let hour = startHour; hour <= endHour; hour++) {
+            hours.value.push(hour + ':00')
+        }
+    })
 
     const onServiceSelected = service => {
         services.value.some(selectedService => selectedService._id === service._id)
@@ -29,6 +41,9 @@ export const useAppointmentStore = defineStore('appointments', () => {
         onServiceSelected,
         isServiceSelected,
         services,
+        date,
+        hours,
+        time,
         totalAmount,
         noServicesSelected
     }

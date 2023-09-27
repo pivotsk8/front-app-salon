@@ -10,6 +10,7 @@ const router = createRouter({
       name: 'home',
       component: HomeView
     },
+
     {
       path: '/reservaciones',
       name: 'appointments',
@@ -30,6 +31,29 @@ const router = createRouter({
               component: () => import('../views/appointment/AppointmentView.vue')
             },
           ]
+        }
+      ]
+    },
+
+    {
+      path: '/auth',
+      name: 'auth',
+      component: () => import('../views/auth/AuthLayout.vue'),
+      children: [
+        {
+          path: 'registro',
+          name: 'register',
+          component: () => import('../views/auth/RegisterView.vue')
+        },
+        {
+          path: 'confirmar-cuenta/:token',
+          name: 'confirm-account',
+          component: () => import('../views/auth/ConfirmAccountView.vue')
+        },
+        {
+          path: 'login',
+          name: 'login',
+          component: () => import('../views/auth/LoginView.vue')
         }
       ]
     }

@@ -1,9 +1,20 @@
 <script setup>
+import { inject } from 'vue'
+import { reset } from '@formkit/vue'
 import AuthApi from '../../api/AuthApi'
 
-const handleSubmit = async ({ password_confirm, ...data }) => {
+const toast = inject('toast')
+
+
+const handleSubmit = async ({ password_confirm, ...formData }) => {
     try {
-        await AuthApi.register(data)
+        const { data } = await AuthApi.register(formData)
+        console.log(data)
+        toast.open({
+            message: data.msg,
+            type: 'success'
+        })
+        reset('registerForm')
     } catch (error) {
         console.log(error)
     }
@@ -16,8 +27,8 @@ const handleSubmit = async ({ password_confirm, ...data }) => {
         <h1 class="text-6xl font-extrabold text-white text-center mt-10">Crear una cuenta</h1>
         <p class="text-2xl text-white text-center my-5">Crea una cuenta en AppSalón</p>
 
-        <FormKit type="form" :actions="false" incomplete-message="No se puede enviar, revisar las notificaciones"
-            @submit="handleSubmit">
+        <FormKit id="registerForm" type="form" :actions="false"
+            incomplete-message="No se puede enviar, revisar las notificaciones" @submit="handleSubmit">
             <FormKit type="text" label="Nombre" name="name" placeholder="Tu Nombre" validation="required|length:3"
                 :validation-messages="{
                     required: 'El Nombre es obligatorio',

@@ -16,7 +16,8 @@
             </div>
 
             <nav class="flex gap-2 item-center justify-end">
-                <button class="p-3 text-gray-200 uppercase text-xs font-black rounded-lg">Mis Citas</button>
+                <RouterLink :to="{ name: 'my-appointment' }" class=" p-3 text-gray-200 uppercase text-xs font-black
+                    rounded-lg">Mis Citas</RouterLink>
 
                 <RouterLink :to="{ name: 'new-appointment' }"
                     class="p-3 text-gray-200 uppercase text-xs font-black rounded-lg bg-blue-700">
@@ -26,6 +27,7 @@
 
         </div>
     </div>
+    
     <main>
         <RouterView />
     </main>

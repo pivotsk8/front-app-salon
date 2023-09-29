@@ -15,11 +15,12 @@ const router = createRouter({
       path: '/reservaciones',
       name: 'appointments',
       component: AppoinementLayout,
+      meta: { requiresAuth: true },
       children: [
         {
-          path:'',
-          name:'my-appointment',
-          component:() => import('../views/appointment/MyAppointmentView.vue')
+          path: '',
+          name: 'my-appointment',
+          component: () => import('../views/appointment/MyAppointmentView.vue')
         },
         {
           path: 'nueva',
@@ -63,6 +64,21 @@ const router = createRouter({
       ]
     }
   ]
+})
+
+router.beforeEach(async (to, from, next) => {
+  const requiresAuth = to.matched.some(url => url.meta.requiresAuth)
+  if (requiresAuth) {
+    try {
+
+    } catch (error) {
+
+    }
+  }
+
+  if (!requiresAuth) {
+    next()
+  }
 })
 
 export default router

@@ -1,5 +1,6 @@
 import { ref, computed, onMounted } from 'vue'
 import { defineStore } from 'pinia'
+import AppointmentAPI from '../api/AppointmentAPI'
 
 export const useAppointmentStore = defineStore('appointments', () => {
 
@@ -27,7 +28,7 @@ export const useAppointmentStore = defineStore('appointments', () => {
             )
     }
 
-    const createdAppointment = () => {
+    const createdAppointment = async () => {
         const appointment = {
             services: services.value.map(service => service._id),
             date: date.value,
@@ -35,7 +36,7 @@ export const useAppointmentStore = defineStore('appointments', () => {
             totalAmount: totalAmount.value
         }
 
-        console.log(appointment)
+        await AppointmentAPI.create(appointment)
     }
 
     const isServiceSelected = computed(() => {

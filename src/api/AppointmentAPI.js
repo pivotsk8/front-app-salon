@@ -7,6 +7,6 @@ export default {
     },
 
     getByDate(date) {
-        return api.get(`/appointments?date=${date}`, data)
+        return api.get(`/appointments?date=${date}`)
     }
 }

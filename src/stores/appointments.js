@@ -1,4 +1,4 @@
-import { ref, computed, onMounted, inject } from 'vue'
+import { ref, computed, onMounted, inject, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { defineStore } from 'pinia'
 import AppointmentAPI from '../api/AppointmentAPI'
@@ -9,9 +9,10 @@ export const useAppointmentStore = defineStore('appointments', () => {
     const date = ref('')
     const hours = ref([])
     const time = ref('')
+    const appointmentsByDate = ref([])
 
     const toast = inject('toast')
-    const router = useRouter()
+    const router = useRouter([])
 
     onMounted(() => {
         const startHour = 9
@@ -20,6 +21,14 @@ export const useAppointmentStore = defineStore('appointments', () => {
         for (let hour = startHour; hour <= endHour; hour++) {
             hours.value.push(hour + ':00')
         }
+    })
+
+    watch(date, async () => {
+        if (date.value === '') return
+        //Obtener las citas
+        const { data } = await AppointmentAPI.getByDate(date.value)
+        appointmentsByDate.value = data
+
     })
 
     const onServiceSelected = service => {
@@ -74,6 +83,16 @@ export const useAppointmentStore = defineStore('appointments', () => {
         return services.value.length && date.value.length && time.value.length
     })
 
+    const isDateSelected = computed(() => {
+        return date.value ? true : false
+    })
+
+    const disableTime = computed(() => {
+        return (hour) => {
+            return appointmentsByDate.value.find(appointment => appointment.time === hour)
+        }
+    })
+
     return {
         onServiceSelected,
         createdAppointment,
@@ -84,7 +103,9 @@ export const useAppointmentStore = defineStore('appointments', () => {
         time,
         totalAmount,
         isValidReservation,
-        noServicesSelected
+        noServicesSelected,
+        isDateSelected,
+        disableTime
     }
 
 })

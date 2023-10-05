@@ -24,6 +24,7 @@ export const useAppointmentStore = defineStore('appointments', () => {
     })
 
     watch(date, async () => {
+        time.value = ''
         if (date.value === '') return
         //Obtener las citas
         const { data } = await AppointmentAPI.getByDate(date.value)

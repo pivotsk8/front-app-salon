@@ -7,6 +7,7 @@ import AppointmentApi from '../api/AppointmentAPI'
 export const useUserStore = defineStore('user', () => {
     const router = useRouter()
     const user = ref({})
+    const userAppointments = ref([])
 
     onMounted(async () => {
         try {
@@ -20,7 +21,7 @@ export const useUserStore = defineStore('user', () => {
 
     async function getUserAppointments() {
         const { data } = await AppointmentApi.getUserAppointments(user.value._id)
-        console.log(data)
+        userAppointments.value = data
     }
 
     const getUserName = computed(() => user.value?.name ? user.value?.name : '')
@@ -31,9 +32,13 @@ export const useUserStore = defineStore('user', () => {
         router.push({ name: 'login' })
     }
 
+    const noAppointments = computed(() => userAppointments.value.length === 0)
+
     return {
         user,
         getUserName,
-        logout
+        logout,
+        userAppointments,
+        noAppointments
     }
 })

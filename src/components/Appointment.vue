@@ -26,9 +26,10 @@ defineProps({
         </p>
 
         <div class="flex gap-2 items-center">
-            <button class="bg-slate-600 text-white p-3 text-sm rounded-lg uppercase font-black flex-1 md:flex-none">
+            <RouterLink class="bg-slate-600 text-white p-3 text-sm rounded-lg uppercase font-black flex-1 md:flex-none"
+                :to="{ name: 'edit-appointment', params: { id: appointment._id } }">
                 Editar Cita
-            </button>
+            </RouterLink>
 
             <button class="bg-red-600 text-white p-3 text-sm rounded-lg uppercase font-black flex-1 md:flex-none">
                 Cancelar Cita

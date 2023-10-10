@@ -5,6 +5,8 @@ import AppointmentAPI from '../api/AppointmentAPI'
 import { convertToISO, convertToDDMMYYYY } from '../helpers/date'
 
 export const useAppointmentStore = defineStore('appointments', () => {
+
+    const appointmentId = ref('')
     const services = ref([])
     const date = ref('')
     const hours = ref([])
@@ -26,15 +28,26 @@ export const useAppointmentStore = defineStore('appointments', () => {
     watch(date, async () => {
         time.value = ''
         if (date.value === '') return
+
         //Obtener las citas
         const { data } = await AppointmentAPI.getByDate(date.value)
-        appointmentsByDate.value = data
+
+
+        if (appointmentId.value) {
+            appointmentsByDate.value = data.filter(appointment => appointment._id !== appointmentId.value)
+            time.value = data.filter(appointment => appointment._id === appointmentId.value)[0].time
+        } else {
+            appointmentsByDate.value = data
+        }
 
     })
+
+
     const setSelectedAppointment = appointment => {
         services.value = appointment.services
         date.value = convertToDDMMYYYY(appointment.date)
         time.value = appointment.time
+        appointmentId.value = appointment._id
     }
     const onServiceSelected = service => {
         services.value.some(selectedService => selectedService._id === service._id)

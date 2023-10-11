@@ -44,13 +44,13 @@ export const useAppointmentStore = defineStore('appointments', () => {
 
     })
 
-
     const setSelectedAppointment = appointment => {
         services.value = appointment.services
         date.value = convertToDDMMYYYY(appointment.date)
         time.value = appointment.time
         appointmentId.value = appointment._id
     }
+
     const onServiceSelected = service => {
         services.value.some(selectedService => selectedService._id === service._id)
             ? services.value = services.value.filter(selectedService => selectedService._id !== service._id)
@@ -134,6 +134,7 @@ export const useAppointmentStore = defineStore('appointments', () => {
         setSelectedAppointment,
         onServiceSelected,
         saveAppointment,
+        clearAppointmentData,
         isServiceSelected,
         services,
         date,

@@ -43,8 +43,9 @@ const disableDate = (date) => {
                 </div>
 
                 <div v-if="appointments.isDateSelected" class="flex-1 grid grid-cols-1 xl:grid-cols-2 gap-5 mt-10 lg:mt-0">
-                    <button v-for="hour in appointments.hours" class="block text-blue-500 rounded-lg text-xl font-black p-3 disabled:opacity-10"
-                        :key="hour" :class="appointments.time === hour ? 'bg-blue-500 text-white' : 'bg-white'"
+                    <button v-for="hour in appointments.hours"
+                        class="block text-blue-500 rounded-lg text-xl font-black p-3 disabled:opacity-10" :key="hour"
+                        :class="appointments.time === hour ? 'bg-blue-500 text-white' : 'bg-white'"
                         @click="appointments.time = hour" :disabled="appointments.disableTime(hour) ? true : false">
                         {{ hour }}
                     </button>
@@ -53,7 +54,7 @@ const disableDate = (date) => {
 
             <div v-if="appointments.isValidReservation" class="flex justify-end">
                 <button class="w-full md:w-auto p-3 bg-blue-500 rounded-lg uppercase font-black text-white"
-                    @click="appointments.createdAppointment">
+                    @click="appointments.saveAppointment">
                     confirmar reservacion
                 </button>
             </div>

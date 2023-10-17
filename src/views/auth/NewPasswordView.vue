@@ -1,10 +1,11 @@
 <script setup>
 import { onMounted, inject, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import AuthApi from '../../api/AuthApi';
 
 const toast = inject('toast')
 const route = useRoute()
+const router = useRouter()
 const { token } = route.params
 
 const validToken = ref(false)
@@ -21,6 +22,25 @@ onMounted(async () => {
         })
     }
 })
+
+const handleSubmit = async ({ password }) => {
+    try {
+        const { data } = await AuthApi.updatePassword(token, { password })
+        toast.open({
+            message: data.msg,
+            type: 'success'
+        })
+
+        setTimeout(() => {
+            router.push({ name: 'login' })
+        }, 3000);
+    } catch (error) {
+        toast.open({
+            message: error.response.data.msg,
+            type: "error",
+        })
+    }
+}
 </script>
 
 <template>
@@ -32,15 +52,17 @@ onMounted(async () => {
             <FormKit id="newPasswordForm" type="form" :actions="false"
                 incomplete-message="No se puede enviar, revisa las notificaciones" @submit="handleSubmit">
 
-                <FormKit type="password" label="Repite el Password" name="password_confirm" placeholder="Repite el password"
-                    validation="required|confirm" :validation-messages="{
+                <FormKit type="password" label="Password" name="password"
+                    placeholder="Password de Usurario - Min 8 Caractares" validation="required|length:8"
+                    :validation-messages="{
                         required: 'El Password es obligatorio',
-                        confirm: 'Los password no son iguales'
+                        confirm: 'El password debe contener al menos 8 caracteres'
                     }" />
 
                 <FormKit type="submit">Guardar Password</FormKit>
             </FormKit>
         </div>
+
         <p v-else class="text-center text-2xl font-black text-white">Token no válido</p>
     </div>
 </template>

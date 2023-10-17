@@ -1,5 +1,6 @@
 <script setup>
 import { inject } from 'vue'
+import { reset } from '@formkit/core'
 import AuthAPI from '../../api/AuthApi'
 
 const toast = inject('toast')
@@ -11,6 +12,7 @@ const handleSubmit = async ({ email }) => {
             message: data.msg,
             type: 'success'
         })
+        reset('forgotPassword')
     } catch (error) {
         toast.open({
             message: error.response.data.msg,
@@ -25,7 +27,7 @@ const handleSubmit = async ({ email }) => {
         <h1 class="text-6xl font-extrabold text-white text-center mt-10">Olvide mi password</h1>
         <p class="text-2xl text-white text-center my-5">Recupera el acceso a tu cuenta</p>
 
-        <FormKit id="loginForm" type="form" :actions="false"
+        <FormKit id="forgotPassword" type="form" :actions="false"
             incomplete-message="No se puede enviar, revisa las notificaciones" @submit="handleSubmit">
 
             <FormKit type="email" label="Email" name="email" placeholder="Email de Usuario" validation="requires|email"

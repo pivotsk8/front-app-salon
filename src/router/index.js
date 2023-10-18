@@ -13,6 +13,12 @@ const router = createRouter({
     },
 
     {
+      path: '/admin',
+      name: 'admin',
+      component: () => import('../views/admin/adminLayout.vue')
+    },
+
+    {
       path: '/reservaciones',
       name: 'appointments',
       component: AppoinementLayout,
@@ -97,10 +103,12 @@ router.beforeEach(async (to, from, next) => {
   const requiresAuth = to.matched.some(url => url.meta.requiresAuth)
   if (requiresAuth) {
     try {
-      await AuthApi.auth()
-      next()
+      const { data } = await AuthApi.auth()
+      data.admin
+        ? next({ name: 'admin' })
+        : next()
     } catch (error) {
-      next({ name: login })
+      next({ name: 'login' })
     }
   }
 
